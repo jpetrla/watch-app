@@ -26,7 +26,7 @@
 
 ## REST service description
 ### Upload watch item to the e-shop warehouse
-Success:
+Success example:
 - Request:
   - method: POST
   - url: http://localhost:8080/api/v1/watch
@@ -48,7 +48,7 @@ Success:
   "message": "Upload successful"
 }`
 
-Error:
+Error example:
 - Request:
   - method: POST
   - url: http://localhost:8080/api/v1/watch
