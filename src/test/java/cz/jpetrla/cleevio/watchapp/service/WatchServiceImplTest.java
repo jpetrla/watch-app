@@ -1,26 +1,30 @@
 package cz.jpetrla.cleevio.watchapp.service;
 
+import cz.jpetrla.cleevio.watchapp.mapper.WatchServiceMapper;
 import cz.jpetrla.cleevio.watchapp.model.Watch;
 import cz.jpetrla.cleevio.watchapp.repository.WatchJpaRepository;
 import cz.jpetrla.cleevio.watchapp.repository.entity.WatchEntity;
+import cz.jpetrla.cleevio.watchapp.service.impl.WatchServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-@SpringBootTest
-@ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 class WatchServiceImplTest {
 
-    @Autowired
+    @Mock
     private WatchJpaRepository repository;
 
-    @Autowired
-    private WatchService service;
+    @Mock
+    private WatchServiceMapper mapper;
+
+    @InjectMocks
+    private WatchServiceImpl service;
 
     @Test
     void testUpload() {
@@ -30,20 +34,13 @@ class WatchServiceImplTest {
         watch.setDescription("Beautiful watch with fountain");
         watch.setFountain("Base64 image".getBytes());
 
-        List<WatchEntity> watchEntities = repository.findAll();
-        assertEquals(0, watchEntities.size());
+        WatchEntity watchEntity = new WatchEntity();
+
+        when(mapper.toWatchEntity(watch)).thenReturn(watchEntity);
 
         service.upload(watch);
 
-        watchEntities = repository.findAll();
-        assertEquals(1, watchEntities.size());
-
-        WatchEntity foundWatchEntity = watchEntities.get(0);
-        assertEquals(watch.getTitle(), foundWatchEntity.getTitle());
-        assertEquals(watch.getPrice(), foundWatchEntity.getPrice());
-        assertEquals(watch.getDescription(), foundWatchEntity.getDescription());
-        assertEquals(watch.getFountain().length, foundWatchEntity.getFountain().length);
-
-        repository.deleteAll();
+        verify(mapper).toWatchEntity(watch);
+        verify(repository).save(watchEntity);
     }
 }

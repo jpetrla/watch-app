@@ -2,6 +2,7 @@ package cz.jpetrla.cleevio.watchapp.controller;
 
 import cz.jpetrla.cleevio.watchapp.model.Watch;
 import cz.jpetrla.cleevio.watchapp.repository.WatchJpaRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,11 @@ class WatchControllerIntegrationTest {
     @Autowired
     private WatchJpaRepository repository;
 
+    @AfterEach
+    void tearDown() {
+        repository.deleteAll();
+    }
+
     @Test
     void testUpload() {
         Watch watch = new Watch();
@@ -46,7 +52,5 @@ class WatchControllerIntegrationTest {
 
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(1, repository.findAll().size());
-
-        repository.deleteAll();
     }
 }

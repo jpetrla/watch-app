@@ -9,7 +9,8 @@ import org.mapstruct.ReportingPolicy;
  * @author Jan Petrla
  */
 @MapperConfig(
-        unmappedTargetPolicy = ReportingPolicy.ERROR
+        unmappedTargetPolicy = ReportingPolicy.ERROR,
+        componentModel = "spring"
 )
 public interface MapStructGlobalConfig {
 }

@@ -2,6 +2,7 @@ package cz.jpetrla.cleevio.watchapp.exception;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +29,22 @@ import java.util.stream.Collectors;
 public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(final HttpMediaTypeNotSupportedException ex, final HttpHeaders headers, final HttpStatusCode statusCode, final WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(
+            final HttpMediaTypeNotSupportedException ex,
+            @NonNull final HttpHeaders headers,
+            @NonNull final HttpStatusCode statusCode,
+            @NonNull final WebRequest request) {
         final List<String> errors = Collections.singletonList(ex.getMessage());
 
         return createResponseEntity(errors, headers, statusCode);
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers, final HttpStatusCode statusCode, final WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            final MethodArgumentNotValidException ex,
+            @NonNull final HttpHeaders headers,
+            @NonNull final HttpStatusCode statusCode,
+            @NonNull final WebRequest request) {
         final List<String> errors = ex.getBindingResult().getFieldErrors()
                 .stream()
                 .map(x -> x.getField() + ": " + x.getDefaultMessage())
@@ -45,15 +54,18 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(final HttpMessageNotReadableException ex, final HttpHeaders headers, final HttpStatusCode statusCode, final WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(
+            final HttpMessageNotReadableException ex,
+            @NonNull final HttpHeaders headers,
+            @NonNull final HttpStatusCode statusCode,
+            @NonNull final WebRequest request) {
         String message;
 
         final Throwable t = ex.getRootCause();
-        if (t instanceof InvalidFormatException) {
-            final InvalidFormatException ife = (InvalidFormatException) t;
+        if (t instanceof InvalidFormatException ife) {
             final List<JsonMappingException.Reference> path = ife.getPath();
 
-            final String fieldName = path.get(0).getFieldName();
+            final String fieldName = path.getFirst().getFieldName();
             final String originalMessage = ife.getOriginalMessage();
 
             message = fieldName + ": " + originalMessage;

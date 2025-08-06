@@ -14,5 +14,4 @@ public class WatchAppApplication {
     public static void main(String[] args) {
         SpringApplication.run(WatchAppApplication.class, args);
     }
-
 }

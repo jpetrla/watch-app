@@ -1,4 +1,4 @@
-package cz.jpetrla.cleevio.watchapp.controlller;
+package cz.jpetrla.cleevio.watchapp.controller;
 
 import cz.jpetrla.cleevio.watchapp.model.Watch;
 import cz.jpetrla.cleevio.watchapp.service.WatchService;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1")
 public class WatchController {
 
     private final WatchService watchService;

@@ -1,15 +1,14 @@
 package cz.jpetrla.cleevio.watchapp.controller;
 
-import cz.jpetrla.cleevio.watchapp.controlller.WatchController;
 import cz.jpetrla.cleevio.watchapp.model.Watch;
 import cz.jpetrla.cleevio.watchapp.service.WatchService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.File;
@@ -29,7 +28,7 @@ class WatchControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @MockBean
+    @MockitoBean
     private WatchService service;
 
     @Test
