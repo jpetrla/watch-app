@@ -27,3 +27,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: jpetrla/watch-app
+          files: target/site/jacoco/jacoco.xml
+          fail_ci_if_error: true
