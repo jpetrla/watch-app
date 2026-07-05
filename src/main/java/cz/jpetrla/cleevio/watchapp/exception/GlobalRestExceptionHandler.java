@@ -1,7 +1,5 @@
 package cz.jpetrla.cleevio.watchapp.exception;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -12,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.exc.InvalidFormatException;
 
 import java.util.Collections;
 import java.util.Date;
@@ -63,9 +63,9 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 
         final Throwable t = ex.getRootCause();
         if (t instanceof InvalidFormatException ife) {
-            final List<JsonMappingException.Reference> path = ife.getPath();
+            final List<JacksonException.Reference> path = ife.getPath();
 
-            final String fieldName = path.getFirst().getFieldName();
+            final String fieldName = path.getFirst().getPropertyName();
             final String originalMessage = ife.getOriginalMessage();
 
             message = fieldName + ": " + originalMessage;
